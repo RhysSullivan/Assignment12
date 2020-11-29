@@ -28,7 +28,7 @@
 //  OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 //  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 //  OTHER DEALINGS IN THE SOFTWARE.
-
+//  Code extended by Rhys Sullivan
 #ifndef pq_hpp
 #define pq_hpp
 
@@ -60,7 +60,7 @@ namespace csi281 {
         // for HEAP-MAXIMUM()
         // NOTE: Our heap starts at 0, not 1
         T peek() {
-            // YOUR CODE HERE
+            return heap[0];
         }
         
         // Remove the next element (max element) in the heap and return it
@@ -70,7 +70,11 @@ namespace csi281 {
         // NOTE: Do not worry about contracting the size of the backing vector
         // after a pop.
         T pop() {
-            // YOUR CODE HERE
+            T max = heap[0];
+            heap[0] = heap[heapSize - 1];
+            --heapSize;
+            maxHeapify(0);
+            return max;
         }
         
         // Put a new element into the priority queue
@@ -82,7 +86,22 @@ namespace csi281 {
         // NOTE: our last element is at heapSize after being push_back()ed onto
         // the end of the vector heap
         void push(T key) {
-            // YOUR CODE HERE
+            ++heapSize;
+            heap.push_back(key);
+            int i = heapSize - 1;
+            // i is heapSize, key is the key
+            if (key < heap[i])
+            {
+                //error
+            }
+            heap[i] = key;
+            while (i > 1 && heap[parent(i)] < heap[i])
+            {
+                T temp = heap[i];
+                heap[i] = heap[parent(i)];
+                heap[parent(i)] = temp;
+                i = parent(i);
+            }
         }
         
         // How many items are in the priority queue?
@@ -104,7 +123,26 @@ namespace csi281 {
         // TIP: See pseudocode in Introduction to Algorithm Chapter 6 page 154
         // NOTE: Macros left() and right() are defined at the top of this file
         void maxHeapify(int i) {
-            // YOUR CODE HERE
+            int l = left(i);
+            int r = right(i);
+            int largest{};
+            if (l < heapSize && heap[l] > heap[i])
+            {
+                largest = l;
+            }
+            else largest = i;
+
+            if (r < heapSize && heap[r] > heap[largest])
+            {
+                largest = r;
+            }
+            if (largest != i)
+            {
+                T temp = heap[i];
+                heap[i] = heap[largest];
+                heap[largest] = temp;
+                maxHeapify(largest);
+            }
         }
         
         vector<T> heap;
