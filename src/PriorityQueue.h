@@ -95,7 +95,7 @@ namespace csi281 {
                 //error
             }
             heap[i] = key;
-            while (i > 1 && heap[parent(i)] < heap[i])
+            while (i > 0 && heap[parent(i)] < heap[i])
             {
                 T temp = heap[i];
                 heap[i] = heap[parent(i)];
